@@ -153,3 +153,16 @@ web_cms/
 ---
 
 Dibuat untuk kemajuan UMKM Indonesia.
+
+---
+
+## 📢 Catatan Rilis (Update Log)
+
+### **Versi 1.1 - Mobile Responsiveness Update (Terbaru)**
+
+- ✅ **New Mobile Navbar**: Menambahkan tombol menu (hamburger) yang responsif di tampilan HP.
+- ✅ **Smart Navbar Logic**: Navbar otomatis mendeteksi scroll. Transparan saat di atas (Hero) dan menjadi Putih Solid saat di-scroll agar tulisan menu terbaca jelas.
+- ✅ **Layout Optimization**: Merapikan tombol "Lihat Menu" dan "Cek Kualitas" menjadi vertikal di HP agar mudah diklik.
+- ✅ **Badge Styling**: Memperbaiki posisi badge "100% Bahan Alami" agar tidak tertutup di layar kecil.
+- ✅ **Security Patch**: Menambahkan `.gitignore` untuk melindungi API Key dan konfigurasi database.
+- ✅ **Admin Recovery**: Menambahkan skrip `seed_admin.js` untuk mereset akses admin jika lupa password.
