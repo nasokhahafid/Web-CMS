@@ -1,0 +1,41 @@
+<%- include('../partials/header') %>
+<div class="flex min-h-screen bg-gray-50">
+    <%- include('../partials/admin_sidebar') %>
+    <main class="flex-1 p-10">
+        <header class="mb-10 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Selamat Datang, Admin!</h1>
+                <p class="text-gray-500">Ringkasan data bisnis Sambal Bledheg Nyah Uban 321.</p>
+            </div>
+            <a href="/" target="_blank" class="px-6 py-2 bg-gray-900 text-white rounded-xl text-sm font-bold shadow-lg">Lihat Website <i class="fas fa-external-link-alt ml-2"></i></a>
+        </header>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                <div class="w-12 h-12 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center text-xl mb-4"><i class="fas fa-box"></i></div>
+                <div class="text-4xl font-bold text-gray-900"><%= counts.products %></div>
+                <div class="text-gray-500 font-medium">Total Produk</div>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center text-xl mb-4"><i class="fas fa-images"></i></div>
+                <div class="text-4xl font-bold text-gray-900"><%= counts.gallery %></div>
+                <div class="text-gray-500 font-medium">Foto Galeri</div>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-xl mb-4"><i class="fas fa-star"></i></div>
+                <div class="text-4xl font-bold text-gray-900"><%= counts.testimonials %></div>
+                <div class="text-gray-500 font-medium">Testimoni Masuk</div>
+            </div>
+        </div>
+
+        <div class="mt-12 bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
+            <h2 class="text-xl font-bold mb-4">Tips Cepat Admin</h2>
+            <ul class="space-y-4 text-gray-600">
+                <li class="flex items-center space-x-3"><i class="fas fa-check-circle text-green-500"></i> <span>Update stok produk secara berkala di menu <b>Produk</b>.</span></li>
+                <li class="flex items-center space-x-3"><i class="fas fa-check-circle text-green-500"></i> <span>Ganti Slogan atau Hero Image di menu <b>Konten Web</b>.</span></li>
+                <li class="flex items-center space-x-3"><i class="fas fa-check-circle text-green-500"></i> <span>Pastikan Nomor WhatsApp aktif di menu <b>Pengaturan</b> agar pelanggan bisa memesan.</span></li>
+            </ul>
+        </div>
+    </main>
+</div>
+<%- include('../partials/footer') %>

@@ -1,0 +1,57 @@
+<%- include('../partials/header') %>
+<div class="flex min-h-screen bg-gray-50">
+    <%- include('../partials/admin_sidebar') %>
+    <main class="flex-1 p-10">
+        <div class="flex justify-between items-center mb-10">
+            <h1 class="text-3xl font-bold">Manajemen Produk</h1>
+            <button onclick="document.getElementById('addModal').classList.remove('hidden')" class="bg-red-600 text-white px-6 py-3 rounded-2xl font-bold shadow-lg hover:bg-red-700 transition">Tambah Produk <i class="fas fa-plus ml-2"></i></button>
+        </div>
+
+        <div class="overflow-x-auto bg-white rounded-3xl shadow-sm border border-gray-100">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50 text-gray-400 uppercase text-xs font-bold">
+                    <tr>
+                        <th class="px-8 py-4">Produk</th>
+                        <th class="px-8 py-4">Level</th>
+                        <th class="px-8 py-4">Harga</th>
+                        <th class="px-8 py-4 text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    <% products.forEach(p => { %>
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="px-8 py-6 flex items-center space-x-4">
+                            <img src="/uploads/<%= p.image %>" class="w-12 h-12 rounded-xl object-cover" onerror="this.src='https://via.placeholder.com/50'">
+                            <span class="font-bold text-gray-900"><%= p.name %></span>
+                        </td>
+                        <td class="px-8 py-6"><span class="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-bold">Level <%= p.spicy_level %></span></td>
+                        <td class="px-8 py-6 font-bold">Rp <%= p.price.toLocaleString('id-ID') %></td>
+                        <td class="px-8 py-6 text-right">
+                            <a href="/admin/products/delete/<%= p.id %>" onclick="return confirm('Hapus produk ini?')" class="text-red-600 hover:text-red-900 ml-4"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Add Modal -->
+        <div id="addModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-6">
+            <div class="bg-white rounded-3xl w-full max-w-lg p-10 shadow-2xl relative">
+                <button onclick="document.getElementById('addModal').classList.add('hidden')" class="absolute top-6 right-6 text-gray-400 hover:text-gray-900"><i class="fas fa-times text-xl"></i></button>
+                <h2 class="text-2xl font-bold mb-6">Tambah Produk Baru</h2>
+                <form action="/admin/products/add" method="POST" enctype="multipart/form-data" class="space-y-4">
+                    <input type="text" name="name" placeholder="Nama Produk" required class="w-full px-5 py-3 rounded-xl bg-gray-50 border border-transparent focus:border-red-600 outline-none">
+                    <textarea name="description" placeholder="Deskripsi Singkat" class="w-full px-5 py-3 rounded-xl bg-gray-50 border border-transparent focus:border-red-600 outline-none"></textarea>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="number" name="spicy_level" placeholder="Level Pedas (1-5)" class="w-full px-5 py-3 rounded-xl bg-gray-50 border border-transparent focus:border-red-600 outline-none">
+                        <input type="number" name="price" placeholder="Harga" required class="w-full px-5 py-3 rounded-xl bg-gray-50 border border-transparent focus:border-red-600 outline-none">
+                    </div>
+                    <input type="file" name="image" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100 italic">
+                    <button type="submit" class="w-full red-gradient text-white py-4 rounded-2xl font-bold shadow-xl">Simpan Produk</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+<%- include('../partials/footer') %>

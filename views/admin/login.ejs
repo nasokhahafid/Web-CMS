@@ -1,0 +1,26 @@
+<%- include('../partials/header') %>
+<div class="min-h-screen flex items-center justify-center bg-gray-100 px-6">
+    <div class="max-w-md w-full bg-white rounded-3xl shadow-2xl p-10">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold text-gray-900 leading-tight">Admin Login</h1>
+            <p class="text-gray-500 mt-2">Masuk untuk mengelola Sambal Bledheg 321</p>
+        </div>
+        <% if (error) { %>
+            <div class="bg-red-50 text-red-600 p-4 rounded-xl mb-6 text-sm flex items-center">
+                <i class="fas fa-exclamation-circle mr-3"></i> <%= error %>
+            </div>
+        <% } %>
+        <form action="/admin/login" method="POST" class="space-y-6">
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Username</label>
+                <input type="text" name="username" required class="w-full px-5 py-4 rounded-2xl bg-gray-50 border border-transparent focus:border-red-600 focus:bg-white transition outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                <input type="password" name="password" required class="w-full px-5 py-4 rounded-2xl bg-gray-50 border border-transparent focus:border-red-600 focus:bg-white transition outline-none">
+            </div>
+            <button type="submit" class="w-full red-gradient text-white py-4 rounded-2xl font-bold shadow-lg hover:brightness-110 transition active:scale-95">Masuk Sekarang</button>
+        </form>
+    </div>
+</div>
+<%- include('../partials/footer') %>

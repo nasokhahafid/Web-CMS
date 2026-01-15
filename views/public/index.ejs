@@ -1,0 +1,165 @@
+<%- include('../partials/header') %>
+
+<!-- Navbar -->
+<nav class="fixed w-full z-50 glass border-b border-white/20 px-6 py-4 flex justify-between items-center text-white">
+    <div class="text-2xl font-bold tracking-tighter text-red-600 drop-shadow-sm">
+        BLEDHEG <span class="text-gray-900">321</span>
+    </div>
+    <div class="hidden md:flex space-x-8 text-gray-800 font-medium">
+        <a href="#home" class="hover:text-red-600 transition">Beranda</a>
+        <a href="#about" class="hover:text-red-600 transition">Tentang</a>
+        <a href="#products" class="hover:text-red-600 transition">Produk</a>
+        <a href="#testi" class="hover:text-red-600 transition">Testimoni</a>
+    </div>
+    <a href="https://wa.me/<%= setting.wa_number %>" class="bg-red-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-red-700 transition shadow-lg">Pesan Sekarang</a>
+</nav>
+
+<!-- Hero Section -->
+<section id="home" class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <img src="/img/hero-bg.png" class="w-full h-full object-cover brightness-50" alt="Sambal Bledheg Background">
+    </div>
+    <div class="container mx-auto px-6 relative z-10" data-aos="fade-up">
+        <div class="max-w-3xl text-white">
+            <span class="bg-red-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">Resep Warisan Nyah Uban</span>
+            <h1 class="text-5xl md:text-7xl font-bold mt-4 leading-tight">
+                <%= content.hero ? content.hero.title : 'Sambal Bledheg Nyah Uban 321' %>
+            </h1>
+            <p class="text-xl mt-6 text-gray-200">
+                <%= content.hero ? content.hero.content : 'Pedasnya Meledak, Gurihnya Mantap!' %>
+            </p>
+            <div class="mt-10 flex space-x-4">
+                <a href="#products" class="bg-white text-red-700 px-8 py-4 rounded-xl font-bold hover:scale-105 transition shadow-2xl">Lihat Menu</a>
+                <a href="#about" class="border-2 border-white px-8 py-4 rounded-xl font-bold hover:bg-white hover:text-red-700 transition uppercase text-sm tracking-widest flex items-center">
+                    Cek Kualitas <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-24 bg-white">
+    <div class="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+        <div class="relative" data-aos="fade-right">
+            <img src="/img/about-sambal.jpg" class="rounded-3xl shadow-2xl" alt="Sambal Bledheg Nyah Uban">
+            <div class="absolute -bottom-8 -right-8 bg-red-600 text-white p-8 rounded-2xl shadow-xl hidden md:block">
+                <div class="text-4xl font-bold">100%</div>
+                <div class="text-sm">Bahan Alami</div>
+            </div>
+        </div>
+        <div data-aos="fade-left">
+            <h2 class="text-4xl font-bold text-gray-900 leading-tight">
+                <%= content.about ? content.about.title : 'Tentang Kami' %>
+            </h2>
+            <p class="mt-6 text-gray-600 leading-relaxed text-lg">
+                <%= content.about ? content.about.content : 'Penjelasan singkat tentang brand kami...' %>
+            </p>
+            <div class="mt-8 space-y-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center"><i class="fas fa-check"></i></div>
+                    <span class="font-semibold text-gray-700">Tanpa Pewarna Buatan</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center"><i class="fas fa-check"></i></div>
+                    <span class="font-semibold text-gray-700">Tanpa Pengawet Kimia</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center"><i class="fas fa-check"></i></div>
+                    <span class="font-semibold text-gray-700">Cabai Pilihan Petani Lokal</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Products Section -->
+<section id="products" class="py-24 bg-gray-50 text-center">
+    <div class="container mx-auto px-6">
+        <div class="max-w-2xl mx-auto mb-16">
+            <h2 class="text-4xl font-bold text-gray-900">Menu Andalan Kami</h2>
+            <p class="mt-4 text-gray-600">Pilih level pedasmu dan rasakan sensasi bumbu rahasia yang meresap sempurna.</p>
+            <p class="mt-4 text-gray-600">nb: harga bisa berubah sewaktu-waktu saat harga cabai naik.</p>
+        </div>
+
+        <!-- Banner Produk -->
+        <div class="grid md:grid-cols-3 gap-8">
+            <% products.forEach((p, index) => { %>
+            <div class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition group border border-gray-100" data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
+                <div class="h-64 overflow-hidden relative">
+                    <img src="/uploads/<%= p.image %>" onerror="this.src='https://via.placeholder.com/400x300?text=Sambal+Enak'" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold">
+                        Level <%= p.spicy_level %>
+                    </div>
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold text-gray-900"><%= p.name %></h3>
+                    <p class="mt-2 text-gray-500 text-sm line-clamp-2"><%= p.description %></p>
+                    <div class="mt-6 flex justify-between items-center">
+                        <span class="text-2xl font-bold text-red-600">Rp <%= p.price.toLocaleString('id-ID') %></span>
+                        <a href="https://wa.me/<%= setting.wa_number %>?text=Halo, saya ingin pesan <%= p.name %>" class="bg-gray-900 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-red-600 transition">Pesan</a>
+                    </div>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery Section -->
+<section id="gallery" class="py-24 bg-white">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-4xl font-bold mb-16" data-aos="fade-down">Galeri Kenikmatan</h2>
+        <div class="max-w-5xl mx-auto rounded-[40px] overflow-hidden shadow-2xl border-4 border-white relative bg-black aspect-video group" data-aos="zoom-in">
+            <video controls class="w-full h-full object-cover" poster="/uploads/banner-produk.jpg">
+                <source src="/uploads/sambel-bledheg-nyah-uban-321.mp4" type="video/mp4">
+                Browser Anda tidak mendukung tag video.
+            </video>
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none group-hover:bg-black/20 transition">
+                <!-- Play icon visual cue (optional, simple CSS) -->
+            </div>
+        </div>
+        <p class="mt-8 text-gray-500 text-lg">Tonton Galeri Kenikamtan Sambal Bledheg nyah uban 321.</p>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section id="testi" class="py-24 bg-red-50">
+    <div class="container mx-auto px-6">
+        <h2 class="text-4xl font-bold text-center mb-16 italic text-red-900" data-aos="fade-down">Apa Kata Mereka?</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <% testimonials.forEach((t, i) => { %>
+            <div class="bg-white p-10 rounded-[40px] shadow-sm relative border border-red-100" data-aos="flip-left" data-aos-delay="<%= i * 150 %>">
+                <div class="absolute -top-6 left-10 w-12 h-12 bg-red-600 text-white flex items-center justify-center text-3xl font-serif rounded-full shadow-lg">"</div>
+                <div class="flex text-yellow-400 mb-6 text-sm">
+                    <% for(let i=0; i<t.rating; i++) { %><i class="fas fa-star"></i><% } %>
+                </div>
+                <p class="text-gray-600 leading-relaxed italic"><%= t.review %></p>
+                <div class="mt-8 pt-8 border-t border-gray-100 font-bold text-gray-900">- <%= t.customer_name %></div>
+            </div>
+            <% }) %>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-20 red-gradient text-white text-center rounded-t-[50px]" data-aos="fade-up" data-aos-offset="0">
+    <div class="container mx-auto px-6">
+        <h2 class="text-4xl font-bold">Ingin Kerjasama atau Reseller?</h2>
+        <p class="mt-4 text-red-100 opacity-80">Hubungi kami sekarang untuk mendapatkan penawaran spesial.</p>
+        <a href="https://wa.me/<%= setting.wa_number %>" class="mt-8 inline-block bg-white text-red-700 px-10 py-4 rounded-full font-bold shadow-2xl hover:bg-gray-100 transition">Hubungi WhatsApp <i class="fab fa-whatsapp ml-2"></i></a>
+    </div>
+</section>
+
+<footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-6 text-center border-t border-gray-800 pt-10">
+        <div class="text-xl font-bold text-red-600">BLEDHEG 321</div>
+        <div class="mt-4 text-gray-500 text-sm">
+            <%= setting.address %><br>
+            Insta: <a href="https://instagram.com/<%= setting.instagram %>" class="hover:text-red-500"><%= setting.instagram %></a>
+        </div>
+        <div class="mt-8 text-xs text-gray-600">© 2026 Sambal Bledheg Nyah Uban 321. Powered by Professional CMS.</div>
+    </div>
+</footer>
+
+<%- include('../partials/footer') %>
