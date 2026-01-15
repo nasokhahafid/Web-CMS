@@ -33,21 +33,31 @@ Dashboard khusus administrator untuk mengelola konten website tanpa koding.
 
 ---
 
-## 🛠️ Teknologi
+## 🛠️ Komponen & Teknologi (Tech Stack)
 
-Aplikasi ini dibangun dengan _Tech Stack_ modern yang ringan dan cepat:
+Berikut adalah daftar lengkap komponen, library, dan sumber daya yang digunakan dalam aplikasi ini beserta tautan resminya:
 
-- **Runtime**: [Node.js](https://nodejs.org/) (JavaScript Runtime)
-- **Framework**: [Express.js](https://expressjs.com/) (Web Framework)
-- **Database**: [MySQL](https://www.mysql.com/) (Menyimpan data produk & admin)
-- **Templating**: [EJS](https://ejs.co/) (Embedded JavaScript templates)
-- **Styling**:
-  - **Tailwind CSS** (Utility-first CSS framework untuk styling cepat)
-  - **Vanilla CSS** (Custom animations & override)
-- **Keamanan**:
-  - `bcrypt`: Hashing password admin.
-  - `express-session`: Manajemen sesi login.
-- **File Upload**: `multer` (Menangani upload foto produk).
+### **Backend (Server & Database)**
+
+- [**Node.js**](https://nodejs.org/): Runtime environment untuk menjalankan JavaScript di server.
+- [**Express.js**](https://expressjs.com/): Framework web yang cepat dan minimalis untuk Node.js.
+- [**MySQL**](https://www.mysql.com/): Sistem manajemen database relasional.
+- [**mysql2**](https://www.npmjs.com/package/mysql2): Driver MySQL untuk Node.js yang cepat dan mendukung Promises.
+- [**dotenv**](https://www.npmjs.com/package/dotenv): Modul untuk memuat variabel environment dari file `.env`.
+
+### **Frontend (Tampilan & Interaksi)**
+
+- [**EJS (Embedded JavaScript)**](https://ejs.co/): Templating engine untuk merender HTML dinamis dari server.
+- [**Tailwind CSS**](https://tailwindcss.com/) (via CDN): Framework CSS "utility-first" untuk styling modern dan responsif.
+- [**AOS (Animate On Scroll)**](https://michalsnik.github.io/aos/): Library untuk efek animasi saat menggulir halaman.
+- [**Font Awesome**](https://fontawesome.com/): Kumpulan ikon vektor dan logo sosial media.
+- [**Google Fonts (Outfit)**](https://fonts.google.com/specimen/Outfit): Font tipografi modern yang digunakan di seluruh website.
+
+### **Utilitas & Keamanan**
+
+- [**bcrypt**](https://www.npmjs.com/package/bcrypt): Library untuk enkripsi (hashing) password admin agar aman.
+- [**express-session**](https://www.npmjs.com/package/express-session): Middleware untuk mengelola sesi login user/admin.
+- [**multer**](https://www.npmjs.com/package/multer): Middleware khusus untuk menangani upload file (foto produk).
 
 ---
 
