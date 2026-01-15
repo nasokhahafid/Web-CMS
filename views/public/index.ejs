@@ -1,17 +1,35 @@
 <%- include('../partials/header') %>
 
 <!-- Navbar -->
-<nav class="fixed w-full z-50 glass border-b border-white/20 px-6 py-4 flex justify-between items-center text-white">
-    <div class="text-2xl font-bold tracking-tighter text-red-600 drop-shadow-sm">
-        BLEDHEG <span class="text-gray-900">321</span>
+<nav class="fixed w-full z-50 transition-all duration-300 border-b border-white/20" id="navbar">
+    <div class="container mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
+        <div class="text-2xl font-bold tracking-tighter text-red-600 drop-shadow-sm z-50 relative">
+            BLEDHEG <span id="logo-suffix" class="text-white transition-colors duration-300">321</span>
+        </div>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex space-x-8 text-white font-medium items-center transition-colors duration-300" id="desktop-menu">
+            <a href="#home" class="hover:text-red-200 transition">Beranda</a>
+            <a href="#about" class="hover:text-red-200 transition">Tentang</a>
+            <a href="#products" class="hover:text-red-200 transition">Produk</a>
+            <a href="#testi" class="hover:text-red-200 transition">Testimoni</a>
+            <a href="https://wa.me/<%= setting.wa_number %>" class="bg-red-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-red-700 transition shadow-lg transform hover:scale-105 border-0">Pesan Sekarang</a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="md:hidden text-white z-50 focus:outline-none transition-colors duration-300">
+            <i class="fas fa-bars text-2xl"></i>
+        </button>
     </div>
-    <div class="hidden md:flex space-x-8 text-gray-800 font-medium">
-        <a href="#home" class="hover:text-red-600 transition">Beranda</a>
-        <a href="#about" class="hover:text-red-600 transition">Tentang</a>
-        <a href="#products" class="hover:text-red-600 transition">Produk</a>
-        <a href="#testi" class="hover:text-red-600 transition">Testimoni</a>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-white/95 backdrop-blur-xl z-40 transform translate-x-full transition-transform duration-300 flex flex-col justify-center items-center space-y-8 md:hidden">
+        <a href="#home" class="mobile-link text-2xl font-bold text-gray-800 hover:text-red-600">Beranda</a>
+        <a href="#about" class="mobile-link text-2xl font-bold text-gray-800 hover:text-red-600">Tentang</a>
+        <a href="#products" class="mobile-link text-2xl font-bold text-gray-800 hover:text-red-600">Produk</a>
+        <a href="#testi" class="mobile-link text-2xl font-bold text-gray-800 hover:text-red-600">Testimoni</a>
+        <a href="https://wa.me/<%= setting.wa_number %>" class="mobile-link bg-red-600 text-white px-8 py-3 rounded-full font-bold text-xl shadow-xl">Pesan Sekarang</a>
     </div>
-    <a href="https://wa.me/<%= setting.wa_number %>" class="bg-red-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-red-700 transition shadow-lg">Pesan Sekarang</a>
 </nav>
 
 <!-- Hero Section -->
@@ -22,15 +40,15 @@
     <div class="container mx-auto px-6 relative z-10" data-aos="fade-up">
         <div class="max-w-3xl text-white">
             <span class="bg-red-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">Resep Warisan Nyah Uban</span>
-            <h1 class="text-5xl md:text-7xl font-bold mt-4 leading-tight">
+            <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold mt-4 leading-tight">
                 <%= content.hero ? content.hero.title : 'Sambal Bledheg Nyah Uban 321' %>
             </h1>
-            <p class="text-xl mt-6 text-gray-200">
+            <p class="text-lg md:text-xl mt-6 text-gray-200 max-w-2xl">
                 <%= content.hero ? content.hero.content : 'Pedasnya Meledak, Gurihnya Mantap!' %>
             </p>
-            <div class="mt-10 flex space-x-4">
-                <a href="#products" class="bg-white text-red-700 px-8 py-4 rounded-xl font-bold hover:scale-105 transition shadow-2xl">Lihat Menu</a>
-                <a href="#about" class="border-2 border-white px-8 py-4 rounded-xl font-bold hover:bg-white hover:text-red-700 transition uppercase text-sm tracking-widest flex items-center">
+            <div class="mt-10 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                <a href="#products" class="bg-white text-red-700 px-8 py-4 rounded-xl font-bold hover:scale-105 transition shadow-2xl text-center">Lihat Menu</a>
+                <a href="#about" class="border-2 border-white px-8 py-4 rounded-xl font-bold hover:bg-white hover:text-red-700 transition uppercase text-sm tracking-widest flex items-center justify-center">
                     Cek Kualitas <i class="fas fa-arrow-right ml-2 text-xs"></i>
                 </a>
             </div>
@@ -39,13 +57,17 @@
 </section>
 
 <!-- About Section -->
-<section id="about" class="py-24 bg-white">
-    <div class="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+<section id="about" class="py-16 md:py-24 bg-white">
+    <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
         <div class="relative" data-aos="fade-right">
             <img src="/img/about-sambal.jpg" class="rounded-3xl shadow-2xl" alt="Sambal Bledheg Nyah Uban">
-            <div class="absolute -bottom-8 -right-8 bg-red-600 text-white p-8 rounded-2xl shadow-xl hidden md:block">
-                <div class="text-4xl font-bold">100%</div>
-                <div class="text-sm">Bahan Alami</div>
+            <div class="absolute -bottom-8 -right-8 bg-red-600 text-white p-6 md:p-8 rounded-2xl shadow-xl z-20 hidden md:block">
+                <div class="text-3xl md:text-4xl font-bold">100%</div>
+                <div class="text-xs md:text-sm">Bahan Alami</div>
+            </div>
+            <!-- Mobile Badge (Inline version usually better, or positioned safely) -->
+            <div class="md:hidden mt-4 bg-red-600 text-white p-4 rounded-xl text-center shadow-lg mx-auto w-max">
+                <span class="font-bold text-xl">100%</span> Bahan Alami
             </div>
         </div>
         <div data-aos="fade-left">
@@ -74,7 +96,7 @@
 </section>
 
 <!-- Products Section -->
-<section id="products" class="py-24 bg-gray-50 text-center">
+<section id="products" class="py-16 md:py-24 bg-gray-50 text-center">
     <div class="container mx-auto px-6">
         <div class="max-w-2xl mx-auto mb-16">
             <h2 class="text-4xl font-bold text-gray-900">Menu Andalan Kami</h2>
@@ -107,7 +129,7 @@
 </section>
 
 <!-- Gallery Section -->
-<section id="gallery" class="py-24 bg-white">
+<section id="gallery" class="py-16 md:py-24 bg-white">
     <div class="container mx-auto px-6 text-center">
         <h2 class="text-4xl font-bold mb-16" data-aos="fade-down">Galeri Kenikmatan</h2>
         <div class="max-w-5xl mx-auto rounded-[40px] overflow-hidden shadow-2xl border-4 border-white relative bg-black aspect-video group" data-aos="zoom-in">
@@ -124,12 +146,12 @@
 </section>
 
 <!-- Testimonials Section -->
-<section id="testi" class="py-24 bg-red-50">
+<section id="testi" class="py-16 md:py-24 bg-red-50">
     <div class="container mx-auto px-6">
         <h2 class="text-4xl font-bold text-center mb-16 italic text-red-900" data-aos="fade-down">Apa Kata Mereka?</h2>
         <div class="grid md:grid-cols-3 gap-8">
             <% testimonials.forEach((t, i) => { %>
-            <div class="bg-white p-10 rounded-[40px] shadow-sm relative border border-red-100" data-aos="flip-left" data-aos-delay="<%= i * 150 %>">
+            <div class="bg-white p-6 md:p-10 rounded-[40px] shadow-sm relative border border-red-100" data-aos="flip-left" data-aos-delay="<%= i * 150 %>">
                 <div class="absolute -top-6 left-10 w-12 h-12 bg-red-600 text-white flex items-center justify-center text-3xl font-serif rounded-full shadow-lg">"</div>
                 <div class="flex text-yellow-400 mb-6 text-sm">
                     <% for(let i=0; i<t.rating; i++) { %><i class="fas fa-star"></i><% } %>
@@ -163,3 +185,82 @@
 </footer>
 
 <%- include('../partials/footer') %>
+
+<script>
+    // Mobile Menu Toggle
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    const links = document.querySelectorAll('.mobile-link');
+    const icon = btn.querySelector('i');
+    
+    // Elements to change on scroll
+    const nav = document.getElementById('navbar');
+    const logoSuffix = document.getElementById('logo-suffix');
+    const desktopMenu = document.getElementById('desktop-menu');
+
+    function toggleMenu() {
+        menu.classList.toggle('translate-x-full');
+        const isOpen = !menu.classList.contains('translate-x-full');
+        
+        if (isOpen) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+            btn.classList.remove('text-white');
+            btn.classList.add('text-gray-900');
+        } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+            updateNavbarState(); // Reset button color based on scroll position
+        }
+    }
+
+    btn.addEventListener('click', toggleMenu);
+
+    links.forEach(link => {
+        link.addEventListener('click', toggleMenu);
+    });
+
+    // Navbar Scroll & Style Logic
+    function updateNavbarState() {
+        if (window.scrollY > 50) {
+            // Scrolled State (White BG)
+            nav.classList.add('bg-white', 'shadow-md');
+            nav.classList.remove('border-white/20');
+            
+            logoSuffix.classList.remove('text-white');
+            logoSuffix.classList.add('text-gray-900');
+            
+            // Desktop Menu Text Color
+            desktopMenu.classList.remove('text-white');
+            desktopMenu.classList.add('text-gray-800');
+
+            // Mobile Btn Color (Only if menu is closed)
+            if (menu.classList.contains('translate-x-full')) {
+                btn.classList.remove('text-white');
+                btn.classList.add('text-gray-900');
+            }
+        } else {
+            // Top State (Transparent)
+            nav.classList.remove('bg-white', 'shadow-md');
+            nav.classList.add('border-white/20');
+            
+            logoSuffix.classList.remove('text-gray-900');
+            logoSuffix.classList.add('text-white');
+            
+            // Desktop Menu Text Color
+            desktopMenu.classList.remove('text-gray-800');
+            desktopMenu.classList.add('text-white');
+
+            // Mobile Btn Color (Only if menu is closed)
+            if (menu.classList.contains('translate-x-full')) {
+                btn.classList.remove('text-gray-900');
+                btn.classList.add('text-white');
+            }
+        }
+    }
+
+    window.addEventListener('scroll', updateNavbarState);
+    
+    // Run on load
+    updateNavbarState();
+</script>
