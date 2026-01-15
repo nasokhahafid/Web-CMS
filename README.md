@@ -39,25 +39,25 @@ Berikut adalah daftar lengkap komponen, library, dan sumber daya yang digunakan 
 
 ### **Backend (Server & Database)**
 
-- [**Node.js**](https://nodejs.org/): Runtime environment untuk menjalankan JavaScript di server.
-- [**Express.js**](https://expressjs.com/): Framework web yang cepat dan minimalis untuk Node.js.
-- [**MySQL**](https://www.mysql.com/): Sistem manajemen database relasional.
-- [**mysql2**](https://www.npmjs.com/package/mysql2): Driver MySQL untuk Node.js yang cepat dan mendukung Promises.
-- [**dotenv**](https://www.npmjs.com/package/dotenv): Modul untuk memuat variabel environment dari file `.env`.
+- ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=nodedotjs&logoColor=white) [**Node.js**](https://nodejs.org/): Runtime environment untuk menjalankan JavaScript di server.
+- ![Express.js](https://img.shields.io/badge/Express.js-000000?style=flat&logo=express&logoColor=white) [**Express.js**](https://expressjs.com/): Framework web yang cepat dan minimalis untuk Node.js.
+- ![MySQL](https://img.shields.io/badge/MySQL-00000F?style=flat&logo=mysql&logoColor=white) [**MySQL**](https://www.mysql.com/): Sistem manajemen database relasional.
+- ![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=flat&logo=npm&logoColor=white) [**mysql2**](https://www.npmjs.com/package/mysql2): Driver MySQL untuk Node.js yang cepat dan mendukung Promises.
+- ![Dotenv](https://img.shields.io/badge/.ENV-ECD53F?style=flat&logo=dotenv&logoColor=black) [**dotenv**](https://www.npmjs.com/package/dotenv): Modul untuk memuat variabel environment dari file `.env`.
 
 ### **Frontend (Tampilan & Interaksi)**
 
-- [**EJS (Embedded JavaScript)**](https://ejs.co/): Templating engine untuk merender HTML dinamis dari server.
-- [**Tailwind CSS**](https://tailwindcss.com/) (via CDN): Framework CSS "utility-first" untuk styling modern dan responsif.
-- [**AOS (Animate On Scroll)**](https://michalsnik.github.io/aos/): Library untuk efek animasi saat menggulir halaman.
-- [**Font Awesome**](https://fontawesome.com/): Kumpulan ikon vektor dan logo sosial media.
-- [**Google Fonts (Outfit)**](https://fonts.google.com/specimen/Outfit): Font tipografi modern yang digunakan di seluruh website.
+- ![EJS](https://img.shields.io/badge/EJS-B4CA65?style=flat&logo=ejs&logoColor=black) [**EJS (Embedded JavaScript)**](https://ejs.co/): Templating engine untuk merender HTML dinamis dari server.
+- ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white) [**Tailwind CSS**](https://tailwindcss.com/) (via CDN): Framework CSS "utility-first" untuk styling modern dan responsif.
+- ![AOS](https://img.shields.io/badge/AOS-Animation-blue?style=flat) [**AOS (Animate On Scroll)**](https://michalsnik.github.io/aos/): Library untuk efek animasi saat menggulir halaman.
+- ![Font Awesome](https://img.shields.io/badge/Font_Awesome-339AF0?style=flat&logo=fontawesome&logoColor=white) [**Font Awesome**](https://fontawesome.com/): Kumpulan ikon vektor dan logo sosial media.
+- ![Google Fonts](https://img.shields.io/badge/Google_Fonts-4285F4?style=flat&logo=googlefonts&logoColor=white) [**Google Fonts (Outfit)**](https://fonts.google.com/specimen/Outfit): Font tipografi modern yang digunakan di seluruh website.
 
 ### **Utilitas & Keamanan**
 
-- [**bcrypt**](https://www.npmjs.com/package/bcrypt): Library untuk enkripsi (hashing) password admin agar aman.
-- [**express-session**](https://www.npmjs.com/package/express-session): Middleware untuk mengelola sesi login user/admin.
-- [**multer**](https://www.npmjs.com/package/multer): Middleware khusus untuk menangani upload file (foto produk).
+- ![Bcrypt](https://img.shields.io/badge/bcrypt-security-red?style=flat) [**bcrypt**](https://www.npmjs.com/package/bcrypt): Library untuk enkripsi (hashing) password admin agar aman.
+- ![Express Session](https://img.shields.io/badge/Session-Auth-orange?style=flat) [**express-session**](https://www.npmjs.com/package/express-session): Middleware untuk mengelola sesi login user/admin.
+- ![Multer](https://img.shields.io/badge/Multer-Uploads-yellow?style=flat) [**multer**](https://www.npmjs.com/package/multer): Middleware khusus untuk menangani upload file (foto produk).
 
 ---
 
