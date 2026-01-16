@@ -168,7 +168,70 @@ Dibuat untuk kemajuan UMKM Indonesia.
 
 ## 📢 Catatan Rilis (Update Log)
 
-### **Versi 1.1 - Mobile Responsiveness Update (Terbaru)**
+### **Versi 1.3 - E-Commerce & Marketing Update (Terbaru)**
+
+#### 🛒 Sistem Keranjang Belanja (Shopping Cart)
+
+- ✅ **Floating Cart Button**: Tombol keranjang mengambang di sudut kanan bawah yang menampilkan jumlah item.
+- ✅ **Direct Add-to-Cart**: Klik produk langsung masuk keranjang tanpa pop-up (lebih cepat!).
+- ✅ **Toast Notification**: Notifikasi elegan saat produk berhasil ditambahkan ke keranjang.
+- ✅ **Multi-Product Order**: Pelanggan bisa pesan banyak varian sambal sekaligus dalam satu pesanan.
+- ✅ **Smart WA Message**: Pesan WhatsApp yang dikirim sudah terformat rapi dengan daftar semua pesanan.
+
+#### 🏷️ Sistem Voucher & Diskon
+
+- ✅ **Menu Voucher Diskon**: Halaman admin baru untuk membuat dan mengelola kode voucher.
+- ✅ **Tipe Diskon Fleksibel**: Mendukung potongan persentase (%) atau nominal tetap (Rp).
+- ✅ **Integrasi Rekap Order**: Admin bisa apply voucher saat mencatat order, total harga terpotong otomatis.
+
+#### 📦 Manajemen Order (Pembukuan)
+
+- ✅ **Rekap Order**: Halaman khusus untuk mencatat transaksi penjualan.
+- ✅ **Alamat Pengiriman**: Menyimpan alamat lengkap pelanggan di setiap order.
+- ✅ **Nomor Resi**: Kolom untuk mencatat nomor resi ekspedisi.
+- ✅ **Cetak Label Pengiriman**: Tombol untuk generate label alamat siap cetak.
+- ✅ **Cetak Struk Pembelian**: Tombol untuk generate struk thermal printer (80mm).
+- ✅ **Auto Hitung Harga**: Total harga otomatis dihitung berdasarkan produk x quantity.
+
+#### ⭐ Ulasan Pelanggan (Customer Review)
+
+- ✅ **Form Ulasan Publik**: Pelanggan bisa memberikan testimoni langsung dari website.
+- ✅ **Sistem Moderasi**: Ulasan baru berstatus "Pending" dan harus disetujui admin sebelum tampil.
+- ✅ **Tombol Approve**: Admin bisa menyetujui ulasan dengan satu klik di dashboard.
+
+#### 📈 Dashboard & Statistik
+
+- ✅ **Grafik Tren Penjualan**: Visualisasi penjualan 7 hari terakhir dengan Chart.js.
+- ✅ **Grafik Produk Terlaris**: Donut chart menampilkan 5 produk paling laris.
+- ✅ **Total Omzet**: Kartu dashboard menampilkan total pendapatan dari semua order.
+
+#### 🔐 Keamanan Akun
+
+- ✅ **Ganti Password Admin**: Fitur untuk mengubah password langsung dari halaman Pengaturan.
+- ✅ **Validasi Password Lama**: Sistem memverifikasi password lama sebelum mengizinkan perubahan.
+
+#### 🔔 Notifikasi Sistem (Flash Messages)
+
+- ✅ **Success/Error Alerts**: Feedback visual setelah setiap aksi (tambah, edit, hapus).
+- ✅ **Auto-Hide**: Notifikasi menghilang otomatis dalam 5 detik.
+
+#### 🌐 SEO & Tracking
+
+- ✅ **Google Analytics**: Input field untuk memasukkan GA Tracking ID.
+- ✅ **Facebook Pixel**: Input field untuk memasukkan FB Pixel ID.
+- ✅ **Sitemap.xml**: Auto-generated sitemap untuk SEO.
+- ✅ **Robots.txt**: File robots.txt otomatis dengan pengaturan yang benar.
+
+---
+
+### **Versi 1.2 - Order Management Update**
+
+- ✅ **Rekap Order**: Tambah halaman untuk mencatat penjualan harian.
+- ✅ **Dashboard Omzet**: Menampilkan total revenue di halaman dashboard.
+
+---
+
+### **Versi 1.1 - Mobile Responsiveness Update**
 
 - ✅ **New Mobile Navbar**: Menambahkan tombol menu (hamburger) yang responsif di tampilan HP.
 - ✅ **Smart Navbar Logic**: Navbar otomatis mendeteksi scroll. Transparan saat di atas (Hero) dan menjadi Putih Solid saat di-scroll agar tulisan menu terbaca jelas.
@@ -176,3 +239,12 @@ Dibuat untuk kemajuan UMKM Indonesia.
 - ✅ **Badge Styling**: Memperbaiki posisi badge "100% Bahan Alami" agar tidak tertutup di layar kecil.
 - ✅ **Security Patch**: Menambahkan `.gitignore` untuk melindungi API Key dan konfigurasi database.
 - ✅ **Admin Recovery**: Menambahkan skrip `seed_admin.js` untuk mereset akses admin jika lupa password.
+
+---
+
+### **Versi 1.0 - Initial Release**
+
+- ✅ Landing page responsif dengan desain modern.
+- ✅ Panel Admin untuk manajemen produk, galeri, testimoni, dan konten.
+- ✅ Integrasi WhatsApp untuk pemesanan langsung.
+- ✅ Autentikasi admin dengan enkripsi password.

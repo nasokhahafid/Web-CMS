@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Label Pengiriman - <%= order.customer_name %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        @media print {
+            body { -webkit-print-color-adjust: exact; margin: 0; padding: 0; }
+            .no-print { display: none; }
+            .page-break { page-break-after: always; }
+        }
+        .label-box {
+            width: 100mm;
+            height: 150mm;
+            border: 2px solid #000;
+            padding: 20px;
+            box-sizing: border-box;
+            background: white;
+            position: relative;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-10 flex flex-col items-center">
+
+    <div class="label-box shadow-xl">
+        <!-- Header Pengirim -->
+        <div class="border-b-2 border-black pb-4 mb-4 flex items-center justify-between">
+            <div>
+                <h1 class="font-bold text-lg uppercase tracking-wider">Sambal Bledheg 321</h1>
+                <p class="text-xs font-semibold text-gray-600"><%= setting.wa_number %></p>
+            </div>
+            <div class="text-right">
+                <span class="bg-black text-white px-2 py-1 text-xs font-bold rounded">PENGIRIM</span>
+            </div>
+        </div>
+
+        <!-- Penerima -->
+        <div class="mb-8">
+            <div class="text-xs font-bold text-gray-500 uppercase mb-1">Kepada / Penerima:</div>
+            <h2 class="text-2xl font-bold mb-2 leading-tight"><%= order.customer_name %></h2>
+            <div class="text-sm font-medium border-l-4 border-black pl-4 py-1">
+                <% if(order.address) { %>
+                    <%= order.address %>
+                <% } else { %>
+                    <span class="text-gray-400 italic">(Alamat belum diinput lengkap)</span>
+                <% } %>
+            </div>
+            <% if(order.notes) { %>
+            <div class="mt-3 text-sm bg-gray-100 p-2 rounded border border-gray-300">
+                <span class="font-bold text-xs uppercase">Catatan:</span> <%= order.notes %>
+            </div>
+            <% } %>
+        </div>
+
+        <!-- Detail Paket -->
+        <div class="border-t-2 border-black pt-4">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-bold text-gray-500 uppercase">Isi Paket:</span>
+                <span class="text-xs font-bold"><%= new Date(order.order_date).toLocaleDateString('id-ID') %></span>
+            </div>
+            <div class="text-lg font-bold border border-black p-3 rounded text-center">
+                <%= order.quantity %>x <%= order.product_name %>
+            </div>
+        </div>
+
+        <!-- Footer / Resi -->
+        <% if(order.receipt_number) { %>
+        <div class="absolute bottom-5 left-5 right-5 text-center">
+            <div class="border-t border-dashed border-gray-400 pt-2 mb-2"></div>
+            <div class="font-mono text-xl font-bold tracking-widest"><%= order.receipt_number %></div>
+            <div class="text-xs text-gray-500">No. Resi Ekspedisi</div>
+        </div>
+        <% } %>
+    </div>
+
+    <div class="mt-8 space-x-4 no-print">
+        <button onclick="window.print()" class="bg-gray-900 text-white px-6 py-2 rounded-lg font-bold shadow hover:bg-black transition"><i class="fas fa-print mr-2"></i> Cetak Label</button>
+        <button onclick="window.close()" class="bg-gray-300 text-gray-800 px-6 py-2 rounded-lg font-bold hover:bg-gray-400 transition">Tutup</button>
+    </div>
+
+</body>
+</html>

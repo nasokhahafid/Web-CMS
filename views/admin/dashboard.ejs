@@ -2,6 +2,7 @@
 <div class="flex min-h-screen bg-gray-50">
     <%- include('../partials/admin_sidebar') %>
     <main class="flex-1 p-10">
+        <%- include('../partials/flash') %>
         <header class="mb-10 flex justify-between items-center">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900">Selamat Datang, Admin!</h1>
@@ -17,6 +18,11 @@
                 <div class="text-gray-500 font-medium">Total Produk</div>
             </div>
             <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                <div class="w-12 h-12 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center text-xl mb-4"><i class="fas fa-money-bill-wave"></i></div>
+                <div class="text-4xl font-bold text-gray-900">Rp <%= Number(counts.revenue).toLocaleString('id-ID') %></div>
+                <div class="text-gray-500 font-medium">Total Omset</div>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
                 <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center text-xl mb-4"><i class="fas fa-images"></i></div>
                 <div class="text-4xl font-bold text-gray-900"><%= counts.gallery %></div>
                 <div class="text-gray-500 font-medium">Foto Galeri</div>
@@ -28,14 +34,81 @@
             </div>
         </div>
 
-        <div class="mt-12 bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
-            <h2 class="text-xl font-bold mb-4">Tips Cepat Admin</h2>
-            <ul class="space-y-4 text-gray-600">
-                <li class="flex items-center space-x-3"><i class="fas fa-check-circle text-green-500"></i> <span>Update stok produk secara berkala di menu <b>Produk</b>.</span></li>
-                <li class="flex items-center space-x-3"><i class="fas fa-check-circle text-green-500"></i> <span>Ganti Slogan atau Hero Image di menu <b>Konten Web</b>.</span></li>
-                <li class="flex items-center space-x-3"><i class="fas fa-check-circle text-green-500"></i> <span>Pastikan Nomor WhatsApp aktif di menu <b>Pengaturan</b> agar pelanggan bisa memesan.</span></li>
-            </ul>
+        <div class="mt-12 grid lg:grid-cols-2 gap-8">
+            <!-- Sales Chart -->
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                <h2 class="text-xl font-bold mb-6">Tren Penjualan (7 Hari Terakhir)</h2>
+                <canvas id="salesChart"></canvas>
+            </div>
+
+            <!-- Products Chart -->
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                <h2 class="text-xl font-bold mb-6">5 Produk Terlaris</h2>
+                <canvas id="productsChart"></canvas>
+            </div>
         </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            // Sales Data
+            const salesData = <%- JSON.stringify(chart.sales || []) %>;
+            const salesDates = salesData.map(d => {
+                const date = new Date(d.date);
+                return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+            });
+            const salesTotals = salesData.map(d => d.total);
+
+            const ctxSales = document.getElementById('salesChart').getContext('2d');
+            new Chart(ctxSales, {
+                type: 'line',
+                data: {
+                    labels: salesDates,
+                    datasets: [{
+                        label: 'Total Penjualan (Rp)',
+                        data: salesTotals,
+                        borderColor: '#dc2626',
+                        backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+
+            // Products Data
+            const productsData = <%- JSON.stringify(chart.products || []) %>;
+            const productNames = productsData.map(p => p.product_name);
+            const productQtys = productsData.map(p => p.qty);
+            const colors = ['#fca5a5', '#f87171', '#dc2626', '#b91c1c', '#7f1d1d'];
+
+            const ctxProducts = document.getElementById('productsChart').getContext('2d');
+            new Chart(ctxProducts, {
+                type: 'doughnut',
+                data: {
+                    labels: productNames,
+                    datasets: [{
+                        data: productQtys,
+                        backgroundColor: colors,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+        </script>
     </main>
 </div>
 <%- include('../partials/footer') %>

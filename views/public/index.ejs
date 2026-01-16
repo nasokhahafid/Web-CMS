@@ -46,12 +46,15 @@
             <p class="text-lg md:text-xl mt-6 text-gray-200 max-w-2xl">
                 <%= content.hero ? content.hero.content : 'Pedasnya Meledak, Gurihnya Mantap!' %>
             </p>
-            <div class="mt-10 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-                <a href="#products" class="bg-white text-red-700 px-8 py-4 rounded-xl font-bold hover:scale-105 transition shadow-2xl text-center">Lihat Menu</a>
-                <a href="#about" class="border-2 border-white px-8 py-4 rounded-xl font-bold hover:bg-white hover:text-red-700 transition uppercase text-sm tracking-widest flex items-center justify-center">
-                    Cek Kualitas <i class="fas fa-arrow-right ml-2 text-xs"></i>
-                </a>
-            </div>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6" data-aos="fade-up" data-aos-delay="400">
+                    <button onclick="openOrderModal()" class="px-10 py-5 bg-white text-red-600 rounded-2xl font-bold shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-3 group">
+                        <span>Pesan Sekarang</span>
+                        <i class="fas fa-chevron-right group-hover:translate-x-2 transition-transform"></i>
+                    </button>
+                    <a href="#products" class="px-10 py-5 border-2 border-white/30 backdrop-blur-md rounded-2xl font-bold hover:bg-white/10 transition flex items-center justify-center">
+                        Lihat Menu
+                    </a>
+                </div>
         </div>
     </div>
 </section>
@@ -114,14 +117,16 @@
                         Level <%= p.spicy_level %>
                     </div>
                 </div>
-                <div class="p-8">
-                    <h3 class="text-2xl font-bold text-gray-900"><%= p.name %></h3>
-                    <p class="mt-2 text-gray-500 text-sm line-clamp-2"><%= p.description %></p>
-                    <div class="mt-6 flex justify-between items-center">
-                        <span class="text-2xl font-bold text-red-600">Rp <%= p.price.toLocaleString('id-ID') %></span>
-                        <a href="https://wa.me/<%= setting.wa_number %>?text=Halo, saya ingin pesan <%= p.name %>" class="bg-gray-900 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-red-600 transition">Pesan</a>
+                    <div class="p-8">
+                        <h3 class="text-xl font-bold mb-3 text-gray-900"><%= p.name %></h3>
+                        <p class="text-gray-500 text-sm mb-6 leading-relaxed line-clamp-2"><%= p.description %></p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl font-bold text-red-600">Rp <%= Number(p.price).toLocaleString('id-ID') %></span>
+                            <button onclick="addToCartDirect('<%= p.name %>')" class="w-12 h-12 bg-red-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-red-200 hover:scale-110 transition-all" title="Tambah ke Keranjang">
+                                <i class="fas fa-cart-plus text-lg"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
             </div>
             <% }) %>
         </div>
@@ -151,25 +156,89 @@
         <h2 class="text-4xl font-bold text-center mb-16 italic text-red-900" data-aos="fade-down">Apa Kata Mereka?</h2>
         <div class="grid md:grid-cols-3 gap-8">
             <% testimonials.forEach((t, i) => { %>
-            <div class="bg-white p-6 md:p-10 rounded-[40px] shadow-sm relative border border-red-100" data-aos="flip-left" data-aos-delay="<%= i * 150 %>">
+            <div class="bg-white p-6 md:p-10 rounded-[40px] shadow-sm relative border border-red-100 h-full flex flex-col" data-aos="flip-left" data-aos-delay="<%= i * 150 %>">
                 <div class="absolute -top-6 left-10 w-12 h-12 bg-red-600 text-white flex items-center justify-center text-3xl font-serif rounded-full shadow-lg">"</div>
                 <div class="flex text-yellow-400 mb-6 text-sm">
                     <% for(let i=0; i<t.rating; i++) { %><i class="fas fa-star"></i><% } %>
                 </div>
-                <p class="text-gray-600 leading-relaxed italic"><%= t.review %></p>
-                <div class="mt-8 pt-8 border-t border-gray-100 font-bold text-gray-900">- <%= t.customer_name %></div>
+                <p class="text-gray-600 leading-relaxed italic flex-1"><%= t.review %></p>
+                <div class="mt-8 pt-6 border-t border-gray-100 font-bold text-gray-900">- <%= t.customer_name %></div>
             </div>
             <% }) %>
+        </div>
+
+        <!-- Add Review Section -->
+        <div class="mt-20 max-w-2xl mx-auto" data-aos="fade-up">
+            <div class="bg-white p-8 md:p-12 rounded-[50px] shadow-xl border border-red-100 text-left">
+                <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">Punya Pengalaman Menarik?</h3>
+                
+                <form action="/testimonial" method="POST" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Anda</label>
+                        <input type="text" name="customer_name" required placeholder="Contoh: Budi Santoso" class="w-full px-5 py-4 rounded-2xl bg-gray-50 border border-gray-100 focus:border-red-600 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Rating</label>
+                        <select name="rating" class="w-full px-5 py-4 rounded-2xl bg-gray-50 border border-gray-100 focus:border-red-600 outline-none">
+                            <option value="5">⭐⭐⭐⭐⭐ (Sangat Puas)</option>
+                            <option value="4">⭐⭐⭐⭐ (Puas)</option>
+                            <option value="3">⭐⭐⭐ (Biasa Saja)</option>
+                            <option value="2">⭐⭐ (Kurang)</option>
+                            <option value="1">⭐ (Kecewa)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Ulasan Anda</label>
+                        <textarea name="review" required rows="4" placeholder="Ceritakan sensasi pedasnya..." class="w-full px-5 py-4 rounded-2xl bg-gray-50 border border-gray-100 focus:border-red-600 outline-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-red-600 text-white py-4 rounded-2xl font-bold shadow-xl hover:bg-red-700 transition uppercase tracking-widest text-sm">Kirim Ulasan</button>
+                    <p class="text-center text-xs text-gray-400 mt-4">*Ulasan akan muncul setelah disetujui admin.</p>
+                </form>
+            </div>
         </div>
     </div>
 </section>
 
+<!-- Success Modal (Hidden by default) -->
+<div id="success-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-6">
+    <div class="bg-white rounded-[40px] p-10 max-w-sm w-full text-center shadow-2xl scale-90 transition-transform duration-300" id="modal-content">
+        <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6">
+            <i class="fas fa-check"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">Terima Kasih!</h3>
+        <p class="text-gray-600 mb-8">Ulasan Anda telah kami terima dan akan segera kami tampilkan setelah disetujui.</p>
+        <button onclick="closeModal()" class="w-full bg-gray-900 text-white py-4 rounded-2xl font-bold">Siap!</button>
+    </div>
+</div>
+
+<script>
+    function closeModal() {
+        document.getElementById('success-modal').classList.add('hidden');
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('submitted')) {
+            const modal = document.getElementById('success-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('modal-content').classList.remove('scale-90');
+                document.getElementById('modal-content').classList.add('scale-100');
+            }, 10);
+        }
+    }
+</script>
+
 <!-- CTA -->
 <section class="py-20 red-gradient text-white text-center rounded-t-[50px]" data-aos="fade-up" data-aos-offset="0">
     <div class="container mx-auto px-6">
-        <h2 class="text-4xl font-bold">Ingin Kerjasama atau Reseller?</h2>
-        <p class="mt-4 text-red-100 opacity-80">Hubungi kami sekarang untuk mendapatkan penawaran spesial.</p>
-        <a href="https://wa.me/<%= setting.wa_number %>" class="mt-8 inline-block bg-white text-red-700 px-10 py-4 rounded-full font-bold shadow-2xl hover:bg-gray-100 transition">Hubungi WhatsApp <i class="fab fa-whatsapp ml-2"></i></a>
+        <h2 class="text-4xl md:text-5xl font-bold mb-8 italic">Jangan Sampai Kehabisan! 🔥</h2>
+        <p class="text-xl mb-12 text-white/90">Ribuan orang sudah meledakkan lidahnya. Sekarang giliran Anda.</p>
+        <button onclick="openOrderModal()" class="px-12 py-6 bg-white text-red-600 rounded-[30px] font-bold shadow-2xl hover:scale-110 hover:-rotate-2 transition-all duration-300 inline-flex items-center space-x-4 group text-lg tracking-widest uppercase">
+            <span>Amankan Pesanan Sekarang</span>
+            <i class="fab fa-whatsapp text-2xl group-hover:rotate-12 transition-transform"></i>
+        </button>
     </div>
 </section>
 
@@ -183,6 +252,236 @@
         <div class="mt-8 text-xs text-gray-600">© 2026 Sambal Bledheg Nyah Uban 321. Powered by Professional CMS.</div>
     </div>
 </footer>
+
+<!-- Floating Cart Button -->
+<div id="floating-cart" class="fixed bottom-6 right-6 z-[100] hidden">
+    <button onclick="openCheckoutModal()" class="relative w-16 h-16 bg-red-600 text-white rounded-full shadow-2xl hover:scale-110 transition-all flex items-center justify-center">
+        <i class="fas fa-shopping-cart text-xl"></i>
+        <span id="cart-count" class="absolute -top-1 -right-1 w-6 h-6 bg-gray-900 text-white text-xs font-bold rounded-full flex items-center justify-center">0</span>
+    </button>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="fixed bottom-24 right-6 z-[100] bg-gray-900 text-white px-6 py-3 rounded-2xl shadow-2xl hidden transform transition-all duration-300 opacity-0 translate-y-4">
+    <div class="flex items-center space-x-3">
+        <i class="fas fa-check-circle text-green-400"></i>
+        <span id="toast-message">Ditambahkan ke keranjang!</span>
+    </div>
+</div>
+
+<!-- Checkout Modal -->
+<div id="checkout-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[110] hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-[40px] p-6 md:p-10 max-w-xl w-full shadow-2xl relative my-8">
+        <button onclick="closeCheckoutModal()" class="absolute top-4 right-6 text-gray-400 hover:text-red-600 text-2xl"><i class="fas fa-times"></i></button>
+        
+        <div class="text-center mb-6">
+            <h3 class="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">Keranjang Belanja 🛒</h3>
+            <p class="text-gray-500 mt-2 text-sm">Cek pesanan Anda, lalu kirim via WhatsApp.</p>
+        </div>
+        
+        <!-- Cart Items -->
+        <div id="checkout-cart-container" class="mb-6">
+            <div id="checkout-cart-items" class="space-y-2 max-h-48 overflow-y-auto"></div>
+            <div id="checkout-empty" class="text-center py-8 text-gray-400">
+                <i class="fas fa-shopping-cart text-4xl mb-3"></i>
+                <p>Keranjang masih kosong</p>
+            </div>
+        </div>
+
+        <!-- Add More Section -->
+        <div class="bg-gray-50 rounded-2xl p-4 mb-6">
+            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Tambah Produk Lain</label>
+            <div class="grid grid-cols-12 gap-2 items-end">
+                <div class="col-span-6">
+                    <select id="checkout-product" class="w-full px-3 py-3 rounded-xl bg-white border border-gray-200 focus:border-red-600 outline-none text-sm">
+                        <% products.forEach(p => { %>
+                        <option value="<%= p.name %>"><%= p.name %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="col-span-3">
+                    <input type="number" id="checkout-qty" value="1" min="1" class="w-full px-3 py-3 rounded-xl bg-white border border-gray-200 focus:border-red-600 outline-none text-sm text-center">
+                </div>
+                <div class="col-span-3">
+                    <button type="button" onclick="addFromCheckout()" class="w-full bg-gray-900 text-white py-3 rounded-xl font-bold text-sm hover:bg-black transition">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Customer Info -->
+        <div class="space-y-4 mb-6">
+            <div>
+                <label class="block text-xs font-bold text-gray-500 mb-1">Nama Penerima</label>
+                <input type="text" id="checkout-name" required placeholder="Nama Lengkap" class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:border-red-600 outline-none text-sm">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-500 mb-1">Alamat Pengiriman</label>
+                <textarea id="checkout-address" required placeholder="Alamat lengkap + Kec/Kota" class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:border-red-600 outline-none text-sm" rows="2"></textarea>
+            </div>
+        </div>
+        
+        <button type="button" id="checkout-send-btn" onclick="sendToWhatsApp()" disabled class="w-full bg-gray-300 text-gray-500 py-4 rounded-2xl font-bold shadow-xl transition uppercase tracking-widest text-sm flex items-center justify-center space-x-3 cursor-not-allowed">
+            <i class="fab fa-whatsapp text-xl"></i>
+            <span>Keranjang Kosong</span>
+        </button>
+    </div>
+</div>
+
+<script>
+    let cart = [];
+
+    // Add to cart directly from product card
+    function addToCartDirect(productName) {
+        const existingIndex = cart.findIndex(item => item.product === productName);
+        if (existingIndex > -1) {
+            cart[existingIndex].qty += 1;
+        } else {
+            cart.push({ product: productName, qty: 1 });
+        }
+        updateFloatingCart();
+        showToast(productName + ' ditambahkan ke keranjang!');
+    }
+
+    // Add from checkout modal
+    function addFromCheckout() {
+        const productSelect = document.getElementById('checkout-product');
+        const qtyInput = document.getElementById('checkout-qty');
+        const product = productSelect.value;
+        const qty = parseInt(qtyInput.value) || 1;
+
+        const existingIndex = cart.findIndex(item => item.product === product);
+        if (existingIndex > -1) {
+            cart[existingIndex].qty += qty;
+        } else {
+            cart.push({ product, qty });
+        }
+
+        qtyInput.value = 1;
+        renderCheckoutCart();
+        updateFloatingCart();
+    }
+
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        renderCheckoutCart();
+        updateFloatingCart();
+    }
+
+    // Update floating cart button
+    function updateFloatingCart() {
+        const floatingCart = document.getElementById('floating-cart');
+        const cartCount = document.getElementById('cart-count');
+        const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+
+        if (totalItems > 0) {
+            floatingCart.classList.remove('hidden');
+            cartCount.innerText = totalItems;
+        } else {
+            floatingCart.classList.add('hidden');
+        }
+    }
+
+    // Show toast notification
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+        toastMessage.innerText = message;
+        
+        toast.classList.remove('hidden');
+        setTimeout(() => {
+            toast.classList.remove('opacity-0', 'translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+        }, 10);
+        
+        setTimeout(() => {
+            toast.classList.add('opacity-0', 'translate-y-4');
+            toast.classList.remove('opacity-100', 'translate-y-0');
+            setTimeout(() => toast.classList.add('hidden'), 300);
+        }, 2000);
+    }
+
+    // Open checkout modal
+    function openCheckoutModal() {
+        renderCheckoutCart();
+        document.getElementById('checkout-modal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeCheckoutModal() {
+        document.getElementById('checkout-modal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
+    // Render cart in checkout modal
+    function renderCheckoutCart() {
+        const itemsDiv = document.getElementById('checkout-cart-items');
+        const emptyDiv = document.getElementById('checkout-empty');
+        const sendBtn = document.getElementById('checkout-send-btn');
+
+        if (cart.length === 0) {
+            itemsDiv.innerHTML = '';
+            emptyDiv.classList.remove('hidden');
+            sendBtn.disabled = true;
+            sendBtn.classList.remove('red-gradient', 'text-white', 'hover:scale-[1.02]', 'cursor-pointer');
+            sendBtn.classList.add('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+            sendBtn.querySelector('span').innerText = 'Keranjang Kosong';
+            return;
+        }
+
+        emptyDiv.classList.add('hidden');
+        sendBtn.disabled = false;
+        sendBtn.classList.add('red-gradient', 'text-white', 'hover:scale-[1.02]', 'cursor-pointer');
+        sendBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+        sendBtn.querySelector('span').innerText = 'Kirim via WhatsApp';
+
+        itemsDiv.innerHTML = cart.map((item, index) => `
+            <div class="flex items-center justify-between bg-white border border-gray-100 rounded-xl px-4 py-3">
+                <div class="flex items-center space-x-3">
+                    <span class="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center font-bold text-sm">${item.qty}</span>
+                    <span class="font-medium text-gray-800 text-sm">${item.product}</span>
+                </div>
+                <button onclick="removeFromCart(${index})" class="text-red-400 hover:text-red-600"><i class="fas fa-trash-alt text-xs"></i></button>
+            </div>
+        `).join('');
+    }
+
+    function sendToWhatsApp() {
+        const name = document.getElementById('checkout-name').value.trim();
+        const address = document.getElementById('checkout-address').value.trim();
+        const waNumber = "<%= setting.wa_number %>";
+
+        if (!name || !address) {
+            alert('Mohon isi Nama dan Alamat terlebih dahulu!');
+            return;
+        }
+
+        if (cart.length === 0) {
+            alert('Keranjang masih kosong!');
+            return;
+        }
+
+        const orderLines = cart.map(item => `• ${item.qty}x ${item.product}`).join('%0A');
+        const message = `Halo Sambal Bledheg! Saya mau pesan:%0A%0A*Nama:* ${name}%0A*Alamat:* ${address}%0A%0A*Pesanan:*%0A${orderLines}%0A%0AMohon info totalnya ya Min! 🙏🔥`;
+        
+        window.open(`https://wa.me/${waNumber}?text=${message}`, '_blank');
+        
+        // Reset cart
+        cart = [];
+        updateFloatingCart();
+        renderCheckoutCart();
+        closeCheckoutModal();
+    }
+
+    // Legacy function for "Pesan Sekarang" button - now opens checkout modal
+    function openOrderModal(productName = '') {
+        if (productName) {
+            addToCartDirect(productName);
+        }
+        openCheckoutModal();
+    }
+</script>
 
 <%- include('../partials/footer') %>
 

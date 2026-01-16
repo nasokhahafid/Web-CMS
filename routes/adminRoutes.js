@@ -39,6 +39,7 @@ router.get('/gallery/delete/:id', adminController.deleteGallery);
 // Testimonials
 router.get('/testimonials', adminController.getTestimonials);
 router.post('/testimonials/add', adminController.postAddTestimonial);
+router.get('/testimonials/approve/:id', adminController.approveTestimonial);
 router.get('/testimonials/delete/:id', adminController.deleteTestimonial);
 
 // Content
@@ -48,5 +49,18 @@ router.post('/content/update', adminController.postUpdateContent);
 // Settings
 router.get('/settings', adminController.getSettings);
 router.post('/settings/update', adminController.postUpdateSettings);
+router.post('/settings/password', adminController.postChangePassword);
+
+// Orders
+router.get('/orders', adminController.getOrders);
+router.post('/orders/add', adminController.postAddOrder);
+router.get('/orders/delete/:id', adminController.deleteOrder);
+router.get('/orders/print-receipt/:id', adminController.getPrintReceipt);
+router.get('/orders/print-label/:id', adminController.getPrintLabel);
+
+// Vouchers
+router.get('/vouchers', adminController.getVouchers);
+router.post('/vouchers/add', adminController.postAddVoucher);
+router.get('/vouchers/delete/:id', adminController.deleteVoucher);
 
 module.exports = router;

@@ -1,0 +1,191 @@
+<%- include('../partials/header') %>
+<div class="flex min-h-screen bg-gray-50">
+    <%- include('../partials/admin_sidebar') %>
+    <main class="flex-1 p-10">
+        <%- include('../partials/flash') %>
+        <h1 class="text-3xl font-bold mb-10">Rekap Order (Pembukuan)</h1>
+
+        <!-- Add Order Form -->
+        <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 mb-10">
+            <h2 class="text-xl font-bold mb-6 flex items-center"><i class="fas fa-plus-circle mr-3 text-red-600"></i> Catat Order Baru</h2>
+            <form action="/admin/orders/add" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Order</label>
+                    <input type="date" name="order_date" required class="w-full px-5 py-3 rounded-2xl bg-gray-50 border border-gray-100 focus:border-red-600 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Pemesan</label>
+                    <input type="text" name="customer_name" placeholder="Nama Customer" required class="w-full px-5 py-3 rounded-2xl bg-gray-50 border border-gray-100 focus:border-red-600 outline-none">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Alamat Pengiriman</label>
+                    <textarea name="address" rows="2" placeholder="Alamat Lengkap Penerima..." class="w-full px-5 py-3 rounded-2xl bg-gray-50 border border-gray-100 focus:border-red-600 outline-none"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Produk</label>
+                    <select name="product_name" id="productSelect" required class="w-full px-5 py-3 rounded-2xl bg-gray-50 border border-gray-100 focus:border-red-600 outline-none">
+                        <option value="" data-price="0">-- Pilih Produk --</option>
+                        <% products.forEach(p => { %>
+                        <option value="<%= p.name %>" data-price="<%= p.price %>"><%= p.name %> - Rp <%= p.price.toLocaleString('id-ID') %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Jumlah (Qty)</label>
+                    <input type="number" name="quantity" id="quantityInput" value="1" min="1" required class="w-full px-5 py-3 rounded-2xl bg-gray-50 border border-gray-100 focus:border-red-600 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">No. Resi (Opsional)</label>
+                    <input type="text" name="receipt_number" placeholder="Contoh: JP12345678" class="w-full px-5 py-3 rounded-2xl bg-gray-50 border border-gray-100 focus:border-red-600 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Total Harga (Rp)</label>
+                    <input type="number" name="total_price_display" id="totalPriceInput" placeholder="Otomatis" readonly class="w-full px-5 py-3 rounded-2xl bg-gray-200 border border-gray-100 focus:border-red-600 outline-none cursor-not-allowed">
+                    <input type="hidden" name="total_price" id="totalPriceHidden">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Voucher (Opsional)</label>
+                    <div class="flex space-x-2">
+                        <input type="text" id="voucherInput" placeholder="KODE" class="flex-1 px-5 py-3 rounded-2xl bg-gray-50 border border-gray-100 focus:border-red-600 outline-none uppercase font-mono">
+                        <button type="button" id="applyVoucherBtn" class="bg-gray-900 text-white px-4 rounded-2xl font-bold text-xs uppercase">Cek</button>
+                    </div>
+                    <p id="voucherStatus" class="text-xs mt-1 hidden"></p>
+                    <input type="hidden" name="voucher_code" id="voucherCodeHidden">
+                    <input type="hidden" name="discount_amount" id="discountAmountHidden" value="0">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Catatan (Optional)</label>
+                    <textarea name="notes" rows="2" placeholder="Contoh: Titip ke satpam..." class="w-full px-5 py-3 rounded-2xl bg-gray-50 border border-gray-100 focus:border-red-600 outline-none"></textarea>
+                </div>
+                <div class="md:col-span-2">
+                    <button type="submit" class="w-full bg-red-600 text-white py-3 rounded-2xl font-bold shadow-lg hover:bg-red-700 transition">Simpan Data</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Orders Table -->
+        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs tracking-wider">
+                            <th class="p-6 font-bold">Tanggal</th>
+                            <th class="p-6 font-bold">Pelanggan</th>
+                            <th class="p-6 font-bold">Produk</th>
+                            <th class="p-6 font-bold">Total</th>
+                            <th class="p-6 font-bold text-center">Cetak</th>
+                            <th class="p-6 font-bold text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-50">
+                        <% orders.forEach(order => { %>
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="p-6 font-medium text-gray-900 border-b border-gray-50 whitespace-nowrap">
+                                <div class="font-bold"><%= new Date(order.order_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) %></div>
+                                <div class="text-xs text-gray-500"><%= new Date(order.order_date).getFullYear() %></div>
+                            </td>
+                            <td class="p-6 text-gray-600 border-b border-gray-50">
+                                <div class="font-bold text-gray-900"><%= order.customer_name %></div>
+                                <div class="text-xs text-gray-500 w-48 truncate"><%= order.address || 'Alamat tidak ada' %></div>
+                            </td>
+                            <td class="p-6 text-gray-600 border-b border-gray-50">
+                                <div class="font-bold"><%= order.product_name %></div>
+                                <div class="text-xs text-gray-500"><%= order.quantity %> Pcs</div>
+                            </td>
+                            <td class="p-6 font-bold text-gray-900 border-b border-gray-50">Rp <%= Number(order.total_price).toLocaleString('id-ID') %></td>
+                            <td class="p-6 text-center border-b border-gray-50">
+                                <div class="flex justify-center space-x-2">
+                                    <a href="/admin/orders/print-label/<%= order.id %>" target="_blank" class="w-8 h-8 rounded-lg bg-gray-900 text-white flex items-center justify-center hover:scale-110 transition" title="Cetak Label Alamat">
+                                        <i class="fas fa-tag text-xs"></i>
+                                    </a>
+                                    <a href="/admin/orders/print-receipt/<%= order.id %>" target="_blank" class="w-8 h-8 rounded-lg bg-white border border-gray-200 text-gray-700 flex items-center justify-center hover:bg-gray-50 transition" title="Cetak Struk">
+                                        <i class="fas fa-receipt text-xs"></i>
+                                    </a>
+                                </div>
+                            </td>
+                            <td class="p-6 text-center border-b border-gray-50">
+                                <a href="/admin/orders/delete/<%= order.id %>" onclick="return confirm('Hapus data order ini?')" class="text-red-600 hover:text-red-800 font-bold text-sm">
+                                    Hapus
+                                </a>
+                            </td>
+                        </tr>
+                        <% }) %>
+                        <% if (orders.length === 0) { %>
+                        <tr>
+                            <td colspan="7" class="p-10 text-center text-gray-500">Belum ada data order.</td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    const productSelect = document.getElementById('productSelect');
+    const quantityInput = document.getElementById('quantityInput');
+    const totalPriceInput = document.getElementById('totalPriceInput');
+    const totalPriceHidden = document.getElementById('totalPriceHidden');
+    const voucherInput = document.getElementById('voucherInput');
+    const applyVoucherBtn = document.getElementById('applyVoucherBtn');
+    const voucherStatus = document.getElementById('voucherStatus');
+    const voucherCodeHidden = document.getElementById('voucherCodeHidden');
+    const discountAmountHidden = document.getElementById('discountAmountHidden');
+
+    const availableVouchers = <%- JSON.stringify(vouchers) %>;
+    let currentDiscount = 0;
+    let appliedVoucherCode = '';
+
+    function calculateTotal() {
+        const selectedOption = productSelect.options[productSelect.selectedIndex];
+        const price = parseFloat(selectedOption.getAttribute('data-price')) || 0;
+        const quantity = parseInt(quantityInput.value) || 0;
+        
+        const subtotal = price * quantity;
+        
+        // Recalculate discount based on subtotal if it's percentage
+        if (appliedVoucherCode) {
+            const v = availableVouchers.find(v => v.code === appliedVoucherCode);
+            if (v) {
+                if (v.discount_type === 'percentage') {
+                    currentDiscount = (subtotal * v.discount_value) / 100;
+                } else {
+                    currentDiscount = v.discount_value;
+                }
+            }
+        }
+
+        const total = Math.max(0, subtotal - currentDiscount);
+        totalPriceInput.value = total;
+        totalPriceHidden.value = total;
+        discountAmountHidden.value = currentDiscount;
+    }
+
+    applyVoucherBtn.addEventListener('click', () => {
+        const code = voucherInput.value.toUpperCase().trim();
+        const v = availableVouchers.find(v => v.code === code && v.is_active);
+        
+        if (v) {
+            appliedVoucherCode = code;
+            voucherCodeHidden.value = code;
+            voucherStatus.innerText = `✅ Diskon ${v.discount_type === 'percentage' ? v.discount_value + '%' : 'Rp ' + Number(v.discount_value).toLocaleString('id-ID')} berhasil dipasang!`;
+            voucherStatus.classList.remove('hidden', 'text-red-500');
+            voucherStatus.classList.add('text-green-600');
+            calculateTotal();
+        } else {
+            appliedVoucherCode = '';
+            voucherCodeHidden.value = '';
+            currentDiscount = 0;
+            voucherStatus.innerText = '❌ Voucher tidak valid atau kadaluarsa';
+            voucherStatus.classList.remove('hidden', 'text-green-600');
+            voucherStatus.classList.add('text-red-500');
+            calculateTotal();
+        }
+    });
+
+    productSelect.addEventListener('change', calculateTotal);
+    quantityInput.addEventListener('input', calculateTotal);
+</script>
+
+<%- include('../partials/footer') %>

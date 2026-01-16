@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Struk Pembelian #<%= order.id %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            body { -webkit-print-color-adjust: exact; }
+            .no-print { display: none; }
+        }
+        body { font-family: 'Courier New', Courier, monospace; }
+    </style>
+</head>
+<body class="bg-gray-100 p-10 flex flex-col items-center">
+
+    <div class="bg-white p-8 w-[80mm] shadow-lg border border-gray-200">
+        <div class="text-center border-b-2 border-dashed border-gray-800 pb-4 mb-4">
+            <h1 class="text-xl font-bold uppercase">Sambal Bledheg 321</h1>
+            <p class="text-xs mt-1"><%= setting.address || 'Jl. Pedas Berapi No. 321' %></p>
+            <p class="text-xs">WA: <%= setting.wa_number %></p>
+        </div>
+
+        <div class="mb-4 text-sm">
+            <div class="flex justify-between">
+                <span>Tgl:</span>
+                <span><%= new Date(order.order_date).toLocaleDateString('id-ID') %></span>
+            </div>
+            <div class="flex justify-between">
+                <span>No. Nota:</span>
+                <span>#<%= order.id %></span>
+            </div>
+            <% if(order.receipt_number) { %>
+            <div class="flex justify-between">
+                <span>Resi:</span>
+                <span><%= order.receipt_number %></span>
+            </div>
+            <% } %>
+            <div class="mt-2 border-b border-gray-300 pb-2">
+                <span>Pelanggan:</span><br>
+                <span class="font-bold"><%= order.customer_name %></span>
+            </div>
+        </div>
+
+        <div class="mb-4 border-b-2 border-dashed border-gray-800 pb-4">
+            <div class="flex justify-between font-bold mb-2">
+                <span>Item</span>
+                <span>Total</span>
+            </div>
+            <div class="flex justify-between items-start mb-2">
+                <div class="w-2/3">
+                    <span class="block text-sm"><%= order.product_name %></span>
+                    <span class="text-xs text-gray-500"><%= order.quantity %> x</span>
+                </div>
+                <div class="font-bold">
+                    <%= Number(order.total_price).toLocaleString('id-ID') %>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-right">
+            <div class="text-lg font-bold">Total: Rp <%= Number(order.total_price).toLocaleString('id-ID') %></div>
+        </div>
+
+        <div class="mt-8 text-center text-xs border-t border-gray-300 pt-4">
+            <p>Terima Kasih atas kunjungannya!</p>
+            <p class="mt-1">"Pedasnya Meledak!"</p>
+        </div>
+    </div>
+
+    <div class="mt-8 space-x-4 no-print">
+        <button onclick="window.print()" class="bg-gray-900 text-white px-6 py-2 rounded-lg font-bold shadow hover:bg-black transition">Cetak Struk</button>
+        <button onclick="window.close()" class="bg-gray-300 text-gray-800 px-6 py-2 rounded-lg font-bold hover:bg-gray-400 transition">Tutup</button>
+    </div>
+
+</body>
+</html>
