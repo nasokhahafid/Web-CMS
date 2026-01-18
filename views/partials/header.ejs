@@ -25,6 +25,52 @@
       .red-gradient {
         background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 100%);
       }
+
+      /* FIRE VIDEO OVERLAY STYLES */
+      .fire-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .fire-video-container {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        mix-blend-mode: screen; 
+        opacity: 0.75; 
+        filter: contrast(1.4) brightness(0.7);
+        /* Mask to reveal the product in the center-bottom */
+        mask-image: radial-gradient(circle at 50% 70%, transparent 10%, black 80%);
+        -webkit-mask-image: radial-gradient(circle at 50% 70%, transparent 10%, black 80%);
+        pointer-events: none;
+      }
+
+      .fire-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Cover the whole area */
+      }
+      
+      /* Optional: Add a base glow behind the video */
+      .fire-video-container::after {
+        content: '';
+        position: absolute;
+        bottom: 5%;
+        left: 20%;
+        right: 20%;
+        height: 100px;
+        background: radial-gradient(ellipse at center, rgba(255, 100, 0, 0.4) 0%, transparent 70%);
+        filter: blur(30px);
+        z-index: -1;
+      }
     </style>
 
     <% if (locals.setting && locals.setting.google_analytics_id) { %>

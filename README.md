@@ -89,13 +89,11 @@ Pastikan Anda sudah menginstal:
     ```
 
 3.  **Setup Database**
-
     - Buka **phpMyAdmin** atau Database Manager favorit Anda (HeidiSQL, DBeaver).
     - Buat database baru dengan nama: `sambal_bledheg_db`
     - Import file `database.sql` yang ada di dalam folder proyek ini ke database tersebut.
 
 4.  **Konfigurasi Environment**
-
     - Cek file `.env`. (Jika belum ada, buat file `.env` baru).
     - Sesuaikan konfigurasi database Anda:
       ```env
@@ -168,7 +166,28 @@ Dibuat untuk kemajuan UMKM Indonesia.
 
 ## 📢 Catatan Rilis (Update Log)
 
-### **Versi 1.3 - E-Commerce & Marketing Update (Terbaru)**
+### **Versi 1.4 - Automated Payment & Order Tracking Update (Saat Ini)**
+
+#### 💸 Sistem Pembayaran & Konfirmasi
+
+- ✅ **QRIS Integration (Simulasi)**: Modal pembayaran menampilkan kode QRIS untuk mempermudah transaksi customer.
+- ✅ **Automated Order Creation**: Pesanan otomatis tercatat di database server begitu customer klik "Saya Sudah Bayar".
+- ✅ **WA Confirmation Flow**: Setelah pembayaran sukses, customer diarahkan untuk konfirmasi ke WhatsApp Owner dengan template pesan yang dinamis.
+- ✅ **Secure Validation**: Validasi data form (Nama, No HP, Alamat) sebelum pesanan diproses.
+
+#### 📐 Update Database & Admin
+
+- ✅ **Enhanced Order Schema**: Update struktur tabel database untuk mencatat Alamat Lengkap, Nomor HP, Total Harga, dan Status Pembayaran.
+- ✅ **Admin Order View**: Update tampilan tabel "Rekap Order" di panel admin agar menampilkan Nomor HP dan Alamat Customer dengan rapi.
+- ✅ **Data Migration**: Skrip otomatis untuk memperbaiki struktur database lama tanpa kehilangan data.
+
+#### 🛡️ Keamanan (Security)
+
+- ✅ **Environment Protection**: Memperbarui `.gitignore` untuk memblokir file sensitif (`.env`, logs, IDE configs) agar aman saat commit ke Git.
+
+---
+
+### **Versi 1.3 - E-Commerce & Marketing Update**
 
 #### 🛒 Sistem Keranjang Belanja (Shopping Cart)
 

@@ -59,3 +59,52 @@ exports.postTestimonial = async (req, res) => {
         res.status(500).send('Error');
     }
 };
+
+exports.postCheckout = async (req, res) => {
+    console.log('Received Checkout Request:', req.body); // Debugging
+    try {
+        const { customer_name, customer_phone, customer_address, cart } = req.body;
+        
+        if (!customer_name || !cart || cart.length === 0) {
+            console.error('Validation Invalid:', req.body);
+            return res.status(400).json({ success: false, message: 'Data tidak lengkap' });
+        }
+
+        let total_amount = 0;
+        if (Array.isArray(cart)) {
+            total_amount = cart.reduce((sum, item) => {
+                const price = Number(item.price) || 0;
+                const qty = Number(item.qty) || 1;
+                return sum + (price * qty);
+            }, 0);
+        }
+
+        console.log('Calculated Total:', total_amount);
+
+        // Insert Order
+        // Note: 'orders' table has legacy columns 'total_price' (no default) and 'order_date' (no default).
+        // we must supply them. We also supply 'total_amount' which is our new column.
+        const [orderResult] = await db.execute(
+            "INSERT INTO orders (customer_name, customer_phone, customer_address, total_amount, total_price, order_date, status) VALUES (?, ?, ?, ?, ?, NOW(), 'paid')", 
+            [customer_name, customer_phone || '', customer_address || '', total_amount, total_amount]
+        );
+        
+        const orderId = orderResult.insertId;
+
+        // Insert Items
+        if (Array.isArray(cart)) {
+            for (const item of cart) {
+                await db.execute(
+                    "INSERT INTO order_items (order_id, product_name, quantity, price) VALUES (?, ?, ?, ?)",
+                    [orderId, item.product, item.qty, Number(item.price) || 0]
+                );
+            }
+        }
+        
+        console.log('Order Saved Successfully:', orderId);
+        res.json({ success: true, message: 'Order created successfully' });
+    } catch (error) {
+        console.error('Checkout Error Stack:', error);
+        res.status(500).json({ success: false, message: 'Failed to create order: ' + error.message });
+    }
+};

@@ -34,9 +34,20 @@
 
 <!-- Hero Section -->
 <section id="home" class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+    <!-- Background Image -->
     <div class="absolute inset-0 z-0">
         <img src="/img/hero-bg.png" class="w-full h-full object-cover brightness-50" alt="Sambal Bledheg Background">
     </div>
+    
+    <!-- Fire Effect Overlay - CIRCULAR RING ON COBEK -->
+    <div class="fire-overlay">
+        <div class="fire-video-container">
+            <video autoplay loop muted playsinline class="fire-video">
+                <source src="/video/fire-loop.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+    
     <div class="container mx-auto px-6 relative z-10" data-aos="fade-up">
         <div class="max-w-3xl text-white">
             <span class="bg-red-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">Resep Warisan Nyah Uban</span>
@@ -58,8 +69,6 @@
         </div>
     </div>
 </section>
-
-<!-- About Section -->
 <section id="about" class="py-16 md:py-24 bg-white">
     <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
         <div class="relative" data-aos="fade-right">
@@ -122,7 +131,7 @@
                         <p class="text-gray-500 text-sm mb-6 leading-relaxed line-clamp-2"><%= p.description %></p>
                         <div class="flex items-center justify-between">
                             <span class="text-2xl font-bold text-red-600">Rp <%= Number(p.price).toLocaleString('id-ID') %></span>
-                            <button onclick="addToCartDirect('<%= p.name %>')" class="w-12 h-12 bg-red-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-red-200 hover:scale-110 transition-all" title="Tambah ke Keranjang">
+                            <button onclick="addToCartDirect('<%= p.name %>', <%= p.price %>)" class="w-12 h-12 bg-red-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-red-200 hover:scale-110 transition-all" title="Tambah ke Keranjang">
                                 <i class="fas fa-cart-plus text-lg"></i>
                             </button>
                         </div>
@@ -270,7 +279,7 @@
 </div>
 
 <!-- Checkout Modal -->
-<div id="checkout-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[110] hidden flex items-center justify-center p-4 overflow-y-auto">
+<div id="checkout-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[9000] hidden flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white rounded-[40px] p-6 md:p-10 max-w-xl w-full shadow-2xl relative my-8">
         <button onclick="closeCheckoutModal()" class="absolute top-4 right-6 text-gray-400 hover:text-red-600 text-2xl"><i class="fas fa-times"></i></button>
         
@@ -288,44 +297,85 @@
             </div>
         </div>
 
-        <!-- Add More Section -->
-        <div class="bg-gray-50 rounded-2xl p-4 mb-6">
-            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Tambah Produk Lain</label>
-            <div class="grid grid-cols-12 gap-2 items-end">
-                <div class="col-span-6">
-                    <select id="checkout-product" class="w-full px-3 py-3 rounded-xl bg-white border border-gray-200 focus:border-red-600 outline-none text-sm">
-                        <% products.forEach(p => { %>
-                        <option value="<%= p.name %>"><%= p.name %></option>
-                        <% }) %>
-                    </select>
-                </div>
-                <div class="col-span-3">
-                    <input type="number" id="checkout-qty" value="1" min="1" class="w-full px-3 py-3 rounded-xl bg-white border border-gray-200 focus:border-red-600 outline-none text-sm text-center">
-                </div>
-                <div class="col-span-3">
-                    <button type="button" onclick="addFromCheckout()" class="w-full bg-gray-900 text-white py-3 rounded-xl font-bold text-sm hover:bg-black transition">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+
         
         <!-- Customer Info -->
         <div class="space-y-4 mb-6">
             <div>
                 <label class="block text-xs font-bold text-gray-500 mb-1">Nama Penerima</label>
-                <input type="text" id="checkout-name" required placeholder="Nama Lengkap" class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:border-red-600 outline-none text-sm">
+                <input type="text" id="checkout-name" required placeholder="Nama Lengkap" class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:border-red-600 outline-none text-sm pointer-events-auto">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-500 mb-1">Nomor WhatsApp</label>
+                <input type="tel" id="checkout-phone" required placeholder="08..." class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:border-red-600 outline-none text-sm pointer-events-auto">
             </div>
             <div>
                 <label class="block text-xs font-bold text-gray-500 mb-1">Alamat Pengiriman</label>
-                <textarea id="checkout-address" required placeholder="Alamat lengkap + Kec/Kota" class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:border-red-600 outline-none text-sm" rows="2"></textarea>
+                <textarea id="checkout-address" required placeholder="Alamat lengkap + Kec/Kota" class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:border-red-600 outline-none text-sm pointer-events-auto" rows="2"></textarea>
             </div>
         </div>
         
-        <button type="button" id="checkout-send-btn" onclick="sendToWhatsApp()" disabled class="w-full bg-gray-300 text-gray-500 py-4 rounded-2xl font-bold shadow-xl transition uppercase tracking-widest text-sm flex items-center justify-center space-x-3 cursor-not-allowed">
-            <i class="fab fa-whatsapp text-xl"></i>
-            <span>Keranjang Kosong</span>
+        <button type="button" id="checkout-send-btn" onclick="openPaymentModal()" disabled class="w-full bg-gray-300 text-gray-500 py-4 rounded-2xl font-bold shadow-xl transition uppercase tracking-widest text-sm flex items-center justify-center space-x-3 cursor-not-allowed">
+            <i class="fas fa-credit-card text-xl"></i>
+            <span>Lanjut Pembayaran</span>
         </button>
+    </div>
+</div>
+
+    </div>
+</div>
+
+<!-- Payment Modal -->
+<div id="payment-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[9001] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-[40px] p-8 max-w-md w-full shadow-2xl relative text-center">
+        <button onclick="closePaymentModal()" class="absolute top-4 right-6 text-gray-400 hover:text-red-600 text-2xl"><i class="fas fa-times"></i></button>
+        
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">Pembayaran QRIS</h3>
+        <p class="text-gray-500 mb-6">Scan QRIS di bawah ini untuk membayar.</p>
+        
+        <div class="bg-white p-4 rounded-2xl border-2 border-dashed border-gray-300 mb-6 inline-block">
+            <img src="/img/qris.png" alt="QRIS Code" class="w-64 h-64 object-contain">
+        </div>
+        
+        <div class="bg-gray-50 p-4 rounded-xl mb-8">
+            <p class="text-sm text-gray-500">Total Pembayaran</p>
+            <p class="text-2xl font-bold text-red-600" id="payment-total">Rp 0</p>
+        </div>
+
+        <button onclick="finishPayment()" class="w-full bg-green-600 text-white py-4 rounded-2xl font-bold shadow-xl hover:bg-green-700 transition uppercase tracking-widest text-sm flex items-center justify-center space-x-2">
+            <i class="fas fa-check-circle"></i>
+            <span>Saya Sudah Bayar</span>
+        </button>
+    </div>
+</div>
+
+<!-- Order Success Modal -->
+<div id="order-success-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9002] hidden flex items-center justify-center p-6">
+    <div class="bg-white rounded-[40px] p-10 max-w-md w-full text-center shadow-2xl scale-90 transition-transform duration-300" id="order-modal-content">
+        <div class="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-5xl mx-auto mb-6">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">Pesanan Diterima!</h3>
+        <p class="text-gray-500 mb-6 text-sm">
+            Mohon lakukan konfirmasi agar pesanan segera diproses.
+        </p>
+
+        <div class="bg-gray-50 rounded-xl p-4 mb-8 text-left border border-gray-100">
+             <p class="text-xs font-bold text-gray-400 uppercase mb-1">Pesan Otomatis:</p>
+             <p class="text-gray-700 italic text-sm">
+                "Terimakasih telah membeli produk sambal bledek nyah uban 321, pesanan segera diproses ya kak, mohon ditunggu."
+             </p>
+        </div>
+
+        <div class="space-y-3">
+             <button onclick="confirmToOwnerWA()" class="w-full bg-green-500 text-white py-4 rounded-2xl font-bold shadow-lg hover:bg-green-600 transition flex items-center justify-center space-x-2 animate-pulse">
+                <i class="fab fa-whatsapp text-xl"></i>
+                <span>Chat Owner</span>
+            </button>
+            <button onclick="closeOrderSuccessModal()" class="w-full bg-gray-100 text-gray-600 py-3 rounded-2xl font-bold hover:bg-gray-200 transition text-sm">
+                Kembali ke Beranda
+            </button>
+        </div>
     </div>
 </div>
 
@@ -333,38 +383,35 @@
     let cart = [];
 
     // Add to cart directly from product card
-    function addToCartDirect(productName) {
+    function addToCartDirect(productName, price) {
         const existingIndex = cart.findIndex(item => item.product === productName);
         if (existingIndex > -1) {
             cart[existingIndex].qty += 1;
         } else {
-            cart.push({ product: productName, qty: 1 });
+            cart.push({ product: productName, qty: 1, price: Number(price) });
         }
         updateFloatingCart();
         showToast(productName + ' ditambahkan ke keranjang!');
     }
 
-    // Add from checkout modal
-    function addFromCheckout() {
-        const productSelect = document.getElementById('checkout-product');
-        const qtyInput = document.getElementById('checkout-qty');
-        const product = productSelect.value;
-        const qty = parseInt(qtyInput.value) || 1;
 
-        const existingIndex = cart.findIndex(item => item.product === product);
-        if (existingIndex > -1) {
-            cart[existingIndex].qty += qty;
-        } else {
-            cart.push({ product, qty });
-        }
 
-        qtyInput.value = 1;
+    function removeFromCart(index) {
+        cart.splice(index, 1);
         renderCheckoutCart();
         updateFloatingCart();
     }
 
-    function removeFromCart(index) {
-        cart.splice(index, 1);
+    function increaseQty(index) {
+        cart[index].qty += 1;
+        renderCheckoutCart();
+        updateFloatingCart();
+    }
+
+    function decreaseQty(index) {
+        if (cart[index].qty > 1) {
+            cart[index].qty -= 1;
+        }
         renderCheckoutCart();
         updateFloatingCart();
     }
@@ -434,26 +481,32 @@
         sendBtn.disabled = false;
         sendBtn.classList.add('red-gradient', 'text-white', 'hover:scale-[1.02]', 'cursor-pointer');
         sendBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
-        sendBtn.querySelector('span').innerText = 'Kirim via WhatsApp';
+        sendBtn.querySelector('span').innerText = 'Lanjut Pembayaran';
 
         itemsDiv.innerHTML = cart.map((item, index) => `
             <div class="flex items-center justify-between bg-white border border-gray-100 rounded-xl px-4 py-3">
                 <div class="flex items-center space-x-3">
-                    <span class="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center font-bold text-sm">${item.qty}</span>
                     <span class="font-medium text-gray-800 text-sm">${item.product}</span>
                 </div>
-                <button onclick="removeFromCart(${index})" class="text-red-400 hover:text-red-600"><i class="fas fa-trash-alt text-xs"></i></button>
+                <div class="flex items-center space-x-3">
+                     <div class="flex items-center bg-gray-50 rounded-lg border border-gray-200">
+                        <button onclick="decreaseQty(${index})" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-red-600 transition"><i class="fas fa-minus text-xs"></i></button>
+                        <span class="text-sm font-bold w-6 text-center text-gray-800">${item.qty}</span>
+                        <button onclick="increaseQty(${index})" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-green-600 transition"><i class="fas fa-plus text-xs"></i></button>
+                     </div>
+                    <button onclick="removeFromCart(${index})" class="w-8 h-8 rounded-full bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-600 transition flex items-center justify-center" title="Hapus"><i class="fas fa-trash-alt text-xs"></i></button>
+                </div>
             </div>
         `).join('');
     }
 
-    function sendToWhatsApp() {
+    function openPaymentModal() {
         const name = document.getElementById('checkout-name').value.trim();
+        const phone = document.getElementById('checkout-phone').value.trim();
         const address = document.getElementById('checkout-address').value.trim();
-        const waNumber = "<%= setting.wa_number %>";
-
-        if (!name || !address) {
-            alert('Mohon isi Nama dan Alamat terlebih dahulu!');
+        
+        if (!name || !address || !phone) {
+            alert('Mohon lengkapi Nama, No HP, dan Alamat!');
             return;
         }
 
@@ -462,19 +515,79 @@
             return;
         }
 
-        const orderLines = cart.map(item => `• ${item.qty}x ${item.product}`).join('%0A');
-        const message = `Halo Sambal Bledheg! Saya mau pesan:%0A%0A*Nama:* ${name}%0A*Alamat:* ${address}%0A%0A*Pesanan:*%0A${orderLines}%0A%0AMohon info totalnya ya Min! 🙏🔥`;
-        
-        window.open(`https://wa.me/${waNumber}?text=${message}`, '_blank');
-        
-        // Reset cart
-        cart = [];
-        updateFloatingCart();
-        renderCheckoutCart();
+        // Calculate Total
+        const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        document.getElementById('payment-total').innerText = 'Rp ' + total.toLocaleString('id-ID');
+
         closeCheckoutModal();
+        document.getElementById('payment-modal').classList.remove('hidden');
+    }
+
+    function closePaymentModal() {
+        document.getElementById('payment-modal').classList.add('hidden');
+        document.getElementById('checkout-modal').classList.remove('hidden');
+    }
+
+    async function finishPayment() {
+        const name = document.getElementById('checkout-name').value.trim();
+        const phone = document.getElementById('checkout-phone').value.trim();
+        const address = document.getElementById('checkout-address').value.trim();
+
+        // Send to Server
+        try {
+            const response = await fetch('/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    customer_name: name,
+                    customer_phone: phone,
+                    customer_address: address,
+                    cart: cart
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                document.getElementById('payment-modal').classList.add('hidden');
+                const modal = document.getElementById('order-success-modal');
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    document.getElementById('order-modal-content').classList.remove('scale-90');
+                    document.getElementById('order-modal-content').classList.add('scale-100');
+                }, 10);
+                
+                // Reset Cart but KEEP form data for WA Confirmation
+                cart = [];
+                updateFloatingCart();
+                // Form will be cleared after they click Confirm or Close
+            } else {
+                alert('Gagal memproses pesanan: ' + result.message);
+            }
+        } catch (error) {
+            console.error('Error Stack:', error);
+            alert('Gagal: ' + error.message);
+        }
+    }
+
+    function closeOrderSuccessModal() {
+        document.getElementById('order-success-modal').classList.add('hidden');
     }
 
     // Legacy function for "Pesan Sekarang" button - now opens checkout modal
+    function confirmToOwnerWA() {
+        // We retrieve the last input values
+        const name = document.getElementById('checkout-name').value.trim();
+        const waNumber = "<%= setting.wa_number %>";
+        
+        const message = `Halo Admin, saya sudah melakukan pembayaran via QRIS.%0A%0A*Atas Nama:* ${name}%0A%0AMohon pesanan segera diproses ya kak. Terimakasih!`;
+        
+        window.open(`https://wa.me/${waNumber}?text=${message}`, '_blank');
+        closeOrderSuccessModal();
+    }
+
     function openOrderModal(productName = '') {
         if (productName) {
             addToCartDirect(productName);
